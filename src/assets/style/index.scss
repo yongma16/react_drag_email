@@ -1,0 +1,37 @@
+.container {
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    &-header {
+        height: 100px;
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    &-body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+        &-left {
+            width: 300px;
+            border-right: 1px solid #dcdcdc;
+        }
+
+        &-right {
+            flex: 1;
+            display: flex;
+
+            .droppable-box {
+                width: 100%;
+                height: 100%;
+                background: #fff;
+            }
+
+            .droppable-box-over {
+                background: rgba(0, 163, 134, .2);
+            }
+        }
+    }
+}

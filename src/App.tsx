@@ -1,33 +1,99 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './assets/style/index.scss'
+import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+
+function Droppable() {
+  const { setNodeRef, isOver } = useDroppable({
+    id: 'droppable',
+    data: {
+      accepts: ['type1', 'type2'],
+    },
+  });
+
+  const dropContainerClassStr = useMemo(() => {
+    return isOver ? 'droppable-box droppable-box-over' : 'droppable-box';
+  }, [isOver]);
+
+  /* ... */
+
+  return (
+    <div ref={setNodeRef} className={dropContainerClassStr}>
+      {/* ... */}
+      拖到这里
+    </div>
+  );
+}
+
+function Draggable() {
+  const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef } = useDraggable({
+    id: 'draggable',
+    data: {
+      type: 'type1',
+      componentType: 'button',
+      renderTag: 'div',
+      componentJsonContent: {
+        type: 'button',
+        content: '按钮',
+        attributes: {
+          'padding-left': '10px',
+          'padding-right': '10px',
+          'padding-top': '5px',
+          'padding-bottom': '5px',
+          'background-color': '#000',
+          'color': '#fff',
+          'border-radius': '5px',
+        }
+      }
+
+    },
+  });
+
+  /* ... */
+
+  return (<div ref={setNodeRef} className='droppable-box'>
+    组件
+    <button ref={setActivatorNodeRef} {...listeners}>Drag handle</button>
+  </div>)
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  function handleDragEnd(event) {
+    console.log('event', event)
+    const { active, over } = event;
+
+    console.log('over', over)
+    if (over && over.data.current.accepts.includes(active.data.current.type)) {
+      // do stuff
+      if (active.data.type === 'button') {
+
+      }
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='container'>
+        <div className='container-header'>
+
+        </div>
+
+        <DndContext onDragEnd={handleDragEnd}>
+          <div className='container-body'>
+            <div className='container-body-left'>
+              <Draggable />
+            </div>
+            <div className='container-body-right'>
+              <Droppable />
+
+            </div>
+          </div>
+        </DndContext>
+
+
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
