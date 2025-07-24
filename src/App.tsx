@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './assets/style/index.scss'
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
 
+import SortableItem from './SortableItem.tsx'
 function Droppable() {
   const { setNodeRef, isOver } = useDroppable({
     id: 'droppable',
@@ -64,13 +64,14 @@ function App() {
     const { active, over } = event;
 
     console.log('over', over)
-    if (over && over.data.current.accepts.includes(active.data.current.type)) {
+    if (over && over.data?.current?.accepts?.includes(active.data.current.type)) {
       // do stuff
       if (active.data.type === 'button') {
 
       }
     }
   }
+  const [items] = useState([1, 2, 3]);
 
   return (
     <>
@@ -83,17 +84,26 @@ function App() {
           <div className='container-body'>
             <div className='container-body-left'>
               <Draggable />
-            </div>
+
+              <div className='sort-box'>
+                <SortableContext items={items}>
+                  {items.map((item) => (
+                    <SortableItem key={item} id={item} />
+                  ))}
+                </SortableContext>
+              </div>
+
+            </div >
             <div className='container-body-right'>
               <Droppable />
 
             </div>
-          </div>
-        </DndContext>
+          </div >
+        </DndContext >
 
 
 
-      </div>
+      </div >
     </>
   )
 }
