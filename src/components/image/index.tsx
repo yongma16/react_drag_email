@@ -1,15 +1,15 @@
 import { useDraggable } from '@dnd-kit/core';
 import { useEffect, useMemo } from 'react';
-function TextComponent() {
+function ImageComponent() {
     const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef } = useDraggable({
-        id: 'draggable-text',
+        id: 'draggable-image',
         data: {
             type: 'type1',
             componentType: 'button',
             renderTag: 'div',
             componentJsonContent: {
-                type: 'button',
-                content: '按钮',
+                type: 'image',
+                content: '图片',
                 attributes: {
                     'padding-left': '10px',
                     'padding-right': '10px',
@@ -24,9 +24,8 @@ function TextComponent() {
         },
     });
     return (<div ref={setNodeRef} className='droppable-box'>
-        文本组件
-        <img src='https://img2.baidu.com/it/u=3542522222,2222222222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500' />
+        图片组件
         <button ref={setActivatorNodeRef} {...listeners}>Drag handle</button>
     </div>)
 }
-export default TextComponent;
+export default ImageComponent;
